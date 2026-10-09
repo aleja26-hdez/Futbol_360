@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Fotos de {{ escuela.nombre }}</h2>
+{% if messages %}{% for m in messages %}<div class="alert alert-success">{{ m }}</div>{% endfor %}{% endif %}
+
+<form method="post" enctype="multipart/form-data" class="card p-3 mb-4">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Subir foto</button>
+</form>
+
+<div class="row">
+    {% for f in fotos %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="{{ f.imagen.url }}" class="card-img-top" style="height:220px; object-fit:cover">
+            <div class="card-body">
+                <p class="card-text">{{ f.descripcion }}</p>
+                <form method="post" action="{% url 'eliminar_foto' f.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-muted">Todavía no has subido fotos.</p>
+    {% endfor %}
+</div>
+{% endblock %}

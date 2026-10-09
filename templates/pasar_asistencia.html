@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Pasar asistencia</h2>
+
+<form method="get" class="mb-4">
+    <select name="entrenamiento" class="form-select" onchange="this.form.submit()">
+        <option value="">-- Selecciona un entrenamiento --</option>
+        {% for e in entrenamientos %}
+        <option value="{{ e.id }}">{{ e.categoria }} - {{ e.fecha }} {{ e.hora_inicio }}</option>
+        {% endfor %}
+    </select>
+</form>
+
+{% if entrenamiento_actual %}
+<form method="post">
+    {% csrf_token %}
+    <table class="table">
+        <tr><th>Jugador</th><th>Presente</th></tr>
+        {% for j in jugadores %}
+        <tr>
+            <td>{{ j.nombre_completo }}</td>
+            <td><input type="checkbox" name="presente_{{ j.id }}"></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <button type="submit" class="btn btn-success">Guardar asistencia</button>
+</form>
+{% endif %}
+{% endblock %}

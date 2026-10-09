@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between">
+    <h2>Escuelas</h2>
+    <a href="{% url 'crear_escuela' %}" class="btn btn-success">+ Nueva escuela</a>
+</div>
+{% if messages %}{% for m in messages %}<div class="alert alert-success">{{ m }}</div>{% endfor %}{% endif %}
+<table class="table">
+    <tr>
+        <th>Nombre</th><th>Ciudad</th><th>Dirección</th><th>Edades</th>
+        <th>Teléfono</th><th>Instagram</th><th>Facebook</th><th>Fecha registro</th><th></th>
+    </tr>
+    {% for e in escuelas %}
+    <tr>
+        <td>{{ e.nombre }}</td>
+        <td>{{ e.ciudad }}</td>
+        <td>{{ e.direccion }}</td>
+        <td>{{ e.edad_minima }} - {{ e.edad_maxima }} años</td>
+        <td>{{ e.telefono }}</td>
+        <td>{% if e.instagram %}<a href="{{ e.instagram }}" target="_blank">Ver</a>{% endif %}</td>
+        <td>{% if e.facebook %}<a href="{{ e.facebook }}" target="_blank">Ver</a>{% endif %}</td>
+        <td>{{ e.fecha_registro }}</td>
+        <td><a href="{% url 'editar_escuela' e.id %}" class="btn btn-sm btn-outline-secondary">Editar</a><a href="{% url 'fotos_escuela' e.id %}" class="btn btn-sm btn-outline-success">Fotos</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

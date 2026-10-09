@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'pagos',
     'torneos',
     'notificaciones',
-
+    'reportes',
     
 ]
 
@@ -68,7 +68,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
     # ...resto del middleware que ya tienes...
 
 ]
@@ -78,7 +77,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -168,3 +167,9 @@ REST_FRAMEWORK = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True   # por ahora, para pruebas; en producción se restringe
+
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_REDIRECT_URL = '/login/'

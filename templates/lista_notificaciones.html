@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Notificaciones enviadas</h2>
+<table class="table">
+    <tr><th>Destinatario</th><th>Título</th><th>Leída</th><th>Fecha</th></tr>
+    {% for n in notificaciones %}
+    <tr><td>{{ n.destinatario }}</td><td>{{ n.titulo }}</td><td>{% if n.leida %}✅{% else %}❌{% endif %}</td><td>{{ n.fecha_envio }}</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

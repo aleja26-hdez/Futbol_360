@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between">
+    <h2>Notificaciones enviadas</h2>
+    <a href="{% url 'enviar_notificacion' %}" class="btn btn-success">+ Enviar nueva</a>
+</div>
+<table class="table">
+    <tr><th>Destinatario</th><th>Título</th><th>Mensaje</th><th>Fecha</th></tr>
+    {% for n in enviadas %}
+    <tr><td>{{ n.destinatario }}</td><td>{{ n.titulo }}</td><td>{{ n.mensaje }}</td><td>{{ n.fecha_envio }}</td></tr>
+    {% empty %}
+    <tr><td colspan="4" class="text-muted">No has enviado notificaciones todavía</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

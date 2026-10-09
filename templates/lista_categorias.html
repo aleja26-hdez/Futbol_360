@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Categorías</h2>
+<table class="table">
+    <tr><th>Nombre</th><th>Edad mínima</th><th>Edad máxima</th><th>Escuela</th></tr>
+    {% for c in categorias %}
+    <tr><td>{{ c.nombre }}</td><td>{{ c.edad_minima }}</td><td>{{ c.edad_maxima }}</td><td>{{ c.escuela }}</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

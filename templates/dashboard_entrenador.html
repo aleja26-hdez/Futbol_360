@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="card mb-4 p-3 bg-light">
+    <h4>🏫 {{ escuela.nombre }}</h4>
+    <p class="mb-1"><strong>Dirección:</strong> {{ escuela.direccion }}, {{ escuela.ciudad }}</p>
+    <p class="mb-1"><strong>Teléfono:</strong> {{ escuela.telefono }}</p>
+</div>
+
+<h3>Mis categorías</h3>
+<ul class="list-group mb-4">
+    {% for c in categorias %}
+    <li class="list-group-item">{{ c.nombre }} ({{ c.edad_minima }}-{{ c.edad_maxima }} años)</li>
+    {% endfor %}
+</ul>
+
+<h3>Mis jugadores</h3>
+<table class="table table-bordered mb-4">
+    <tr>
+        <th>Jugador</th><th>Edad</th><th>Categoría</th>
+        <th>Acudiente</th><th>Teléfono acudiente</th>
+    </tr>
+    {% for j in jugadores %}
+    <tr>
+        <td>{{ j.nombre_completo }}</td>
+        <td>{{ j.edad }}</td>
+        <td>{{ j.categoria }}</td>
+        <td>{{ j.acudiente }}</td>
+        <td>{{ j.telefono_acudiente }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5" class="text-muted">No tienes jugadores asignados todavía</td></tr>
+    {% endfor %}
+</table>
+
+<h3>Mis entrenamientos</h3>
+<table class="table table-bordered mb-4">
+    <tr><th>Categoría</th><th>Fecha</th><th>Hora inicio</th><th>Hora fin</th><th>Lugar</th></tr>
+    {% for e in entrenamientos %}
+    <tr><td>{{ e.categoria }}</td><td>{{ e.fecha }}</td><td>{{ e.hora_inicio }}</td><td>{{ e.hora_fin }}</td><td>{{ e.lugar }}</td></tr>
+    {% empty %}
+    <tr><td colspan="5" class="text-muted">No tienes entrenamientos registrados</td></tr>
+    {% endfor %}
+</table>
+
+<h3>Historial de asistencia</h3>
+<table class="table table-bordered">
+    <tr><th>Jugador</th><th>Entrenamiento</th><th>Presente</th></tr>
+    {% for a in asistencias %}
+    <tr>
+        <td>{{ a.jugador }}</td>
+        <td>{{ a.entrenamiento }}</td>
+        <td>{% if a.presente %}✅{% else %}❌{% endif %}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3" class="text-muted">Sin registros de asistencia todavía</td></tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between">
+    <h2>Usuarios</h2>
+    <a href="{% url 'crear_usuario' %}" class="btn btn-success">+ Nuevo usuario</a>
+</div>
+{% if messages %}{% for m in messages %}<div class="alert alert-success">{{ m }}</div>{% endfor %}{% endif %}
+<table class="table">
+    <tr>
+        <th>Usuario</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Email</th>
+        <th>Rol</th>
+        <th>Escuela</th>
+        <th>Activo</th>
+        <th></th>
+    </tr>
+    {% for u in usuarios %}
+    <tr>
+        <td>{{ u.username }}</td>
+        <td>{{ u.first_name }}</td>
+        <td>{{ u.last_name }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.get_rol_display }}</td>
+        <td>{{ u.escuela|default:"-" }}</td>
+        <td>{% if u.is_active %}✅{% else %}❌{% endif %}</td>
+        <td><a href="{% url 'editar_usuario' u.id %}" class="btn btn-sm btn-outline-secondary">Editar</a></td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="8" class="text-muted">No hay usuarios registrados todavía</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

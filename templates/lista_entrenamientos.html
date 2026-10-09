@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Entrenamientos</h2>
+<table class="table">
+    <tr><th>Categoría</th><th>Entrenador</th><th>Fecha</th><th>Hora inicio</th><th>Hora fin</th><th>Lugar</th></tr>
+    {% for e in entrenamientos %}
+    <tr><td>{{ e.categoria }}</td><td>{{ e.entrenador }}</td><td>{{ e.fecha }}</td><td>{{ e.hora_inicio }}</td><td>{{ e.hora_fin }}</td><td>{{ e.lugar }}</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Estados de pago</h2>
+<table class="table">
+    <tr><th>Jugador</th><th>Mes</th><th>Total</th><th>Abonado</th><th>Saldo</th><th>Estado</th></tr>
+    {% for e in estados %}
+    <tr><td>{{ e.jugador }}</td><td>{{ e.mes }}</td><td>${{ e.valor_total }}</td><td>${{ e.valor_abonado }}</td><td>${{ e.saldo_pendiente }}</td><td>{{ e.get_estado_display }}</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

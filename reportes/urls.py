@@ -1,0 +1,30 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('jugadores/', views.lista_jugadores, name='lista_jugadores'),
+    path('pagos/', views.lista_pagos, name='lista_pagos'),
+    path('categorias/', views.lista_categorias, name='lista_categorias'),
+    path('entrenadores/', views.lista_entrenadores, name='lista_entrenadores'),
+    path('entrenamientos/', views.lista_entrenamientos, name='lista_entrenamientos'),
+    path('torneos/', views.lista_torneos, name='lista_torneos'),
+    path('notificaciones/', views.lista_notificaciones, name='lista_notificaciones'),
+    path('dashboard-entrenador/', views.dashboard_entrenador, name='dashboard_entrenador'),
+    path('pasar-asistencia/', views.pasar_asistencia, name='pasar_asistencia'),
+    path('mi-estado-cuenta/', views.mi_estado_cuenta, name='mi_estado_cuenta'),
+    path('asistencia-hijo/', views.asistencia_hijo, name='asistencia_hijo'),
+    path('escuelas/', views.lista_escuelas, name='lista_escuelas'),
+    path('escuelas/crear/', views.crear_escuela, name='crear_escuela'),
+    path('escuelas/<int:escuela_id>/editar/', views.editar_escuela, name='editar_escuela'),
+    path('usuarios/', views.lista_usuarios, name='lista_usuarios'),
+    path('usuarios/crear/', views.crear_usuario, name='crear_usuario'),
+    path('usuarios/<int:usuario_id>/editar/', views.editar_usuario, name='editar_usuario'),
+    path('mis-entrenamientos-hijo/', views.mis_entrenamientos_hijo, name='mis_entrenamientos_hijo'),
+    path('mis-notificaciones/', views.mis_notificaciones, name='mis_notificaciones'),
+    path('notificaciones-entrenador/', views.notificaciones_entrenador, name='notificaciones_entrenador'),
+    path('enviar-notificacion/', views.enviar_notificacion, name='enviar_notificacion'),
+    path('info-escuela/', views.info_escuela, name='info_escuela'),
+    path('escuelas/<int:escuela_id>/fotos/', views.fotos_escuela, name='fotos_escuela'),
+    path('fotos/<int:foto_id>/eliminar/', views.eliminar_foto, name='eliminar_foto'),
+]

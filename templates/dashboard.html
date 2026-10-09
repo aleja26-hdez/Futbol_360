@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">Panel de indicadores</h2>
+<div class="row">
+    <div class="col-md-3">
+        <div class="card text-center p-3 border-success">
+            <h3>{{ total_jugadores }}</h3>
+            <p>Jugadores activos</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center p-3 border-danger">
+            <h3>{{ pendientes }}</h3>
+            <p>Pagos pendientes</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center p-3 border-warning">
+            <h3>{{ abonados }}</h3>
+            <p>Pagos abonados</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center p-3 border-success">
+            <h3>{{ cancelados }}</h3>
+            <p>Pagos cancelados</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Entrenamientos de mi hijo</h2>
+<table class="table table-bordered mb-4">
+    <tr><th>Categoría</th><th>Fecha</th><th>Hora inicio</th><th>Hora fin</th><th>Lugar</th><th>Entrenador</th><th>Contacto</th></tr>
+    {% for e in entrenamientos %}
+    <tr>
+        <td>{{ e.categoria }}</td>
+        <td>{{ e.fecha }}</td>
+        <td>{{ e.hora_inicio }}</td>
+        <td>{{ e.hora_fin }}</td>
+        <td>{{ e.lugar }}</td>
+        <td>{{ e.entrenador.nombre_completo }}</td>
+        <td>{{ e.entrenador.telefono }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="7" class="text-muted">No hay entrenamientos programados todavía</td></tr>
+    {% endfor %}
+</table>
+
+<h2>Torneos y partidos</h2>
+{% for t in torneos %}
+<div class="card mb-4">
+    <div class="card-header bg-success text-white">
+        <strong>Torneo:</strong> {{ t.nombre }} &nbsp;|&nbsp;
+        <strong>Categoría:</strong> {{ t.categoria }} &nbsp;|&nbsp;
+        <strong>Fechas:</strong> {{ t.fecha_inicio }} a {{ t.fecha_fin }}
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <tr><th>Rival</th><th>Fecha</th><th>Hora</th><th>Marcador</th></tr>
+            {% for p in t.partidos.all %}
+            <tr>
+                <td>{{ p.rival }}</td>
+                <td>{{ p.fecha }}</td>
+                <td>{{ p.hora }}</td>
+                <td>{{ p.goles_favor }} - {{ p.goles_contra }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" class="text-muted">Sin partidos registrados</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% empty %}
+<p class="text-muted">No hay torneos registrados para la categoría de tu hijo.</p>
+{% endfor %}
+
+{% endblock %}

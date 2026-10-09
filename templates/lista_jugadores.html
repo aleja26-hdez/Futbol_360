@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Jugadores</h2>
+<table class="table">
+    <tr><th>Nombre</th><th>Edad</th><th>Categoría</th><th>Acudiente</th></tr>
+    {% for j in jugadores %}
+    <tr><td>{{ j.nombre_completo }}</td><td>{{ j.edad }}</td><td>{{ j.categoria }}</td><td>{{ j.acudiente }}</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

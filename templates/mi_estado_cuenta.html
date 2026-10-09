@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Estado de cuenta</h2>
+
+{% for e in estados %}
+<div class="card mb-3">
+    <div class="card-header bg-success text-white">
+        <strong>Mes:</strong> {{ e.mes }} &nbsp;|&nbsp;
+        <strong>Total:</strong> ${{ e.valor_total }} &nbsp;|&nbsp;
+        <strong>Saldo pendiente:</strong> ${{ e.saldo_pendiente }} &nbsp;|&nbsp;
+        <strong>Estado:</strong> {{ e.get_estado_display }}
+    </div>
+    <div class="card-body">
+        <h6>Historial de abonos</h6>
+        <table class="table table-sm">
+            <tr><th>Valor</th><th>Fecha</th><th>Método</th></tr>
+            {% for a in e.abonos.all %}
+            <tr><td>${{ a.valor }}</td><td>{{ a.fecha }}</td><td>{{ a.metodo }}</td></tr>
+            {% empty %}
+            <tr><td colspan="3" class="text-muted">Sin abonos registrados todavía</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% empty %}
+<p class="text-muted">No tienes pagos registrados todavía.</p>
+{% endfor %}
+
+{% endblock %}

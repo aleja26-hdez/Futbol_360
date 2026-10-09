@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Entrenadores</h2>
+<table class="table">
+    <tr><th>Nombre</th><th>Teléfono</th><th>Especialidad</th><th>Categorías</th></tr>
+    {% for e in entrenadores %}
+    <tr>
+        <td>{{ e.nombre_completo }}</td>
+        <td>{{ e.telefono }}</td>
+        <td>{{ e.especialidad }}</td>
+        <td>{% for c in e.categorias.all %}{{ c.nombre }} {% endfor %}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

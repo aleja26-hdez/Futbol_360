@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if escuela %}
+<div class="card mb-4 p-4">
+    <div class="d-flex align-items-center mb-3">
+        {% if escuela.logo %}
+        <img src="{{ escuela.logo.url }}" alt="Logo" style="height:80px" class="me-3">
+        {% endif %}
+        <h2 class="mb-0">{{ escuela.nombre }}</h2>
+    </div>
+    <p class="mb-1"><strong>Ubicación:</strong> {{ escuela.direccion }}, {{ escuela.ciudad }}</p>
+    <p class="mb-1"><strong>Edades:</strong> {{ escuela.edad_minima }} a {{ escuela.edad_maxima }} años</p>
+    <p class="mb-1"><strong>Teléfono:</strong> {{ escuela.telefono }}</p>
+    {% if escuela.instagram %}
+    <p class="mb-1"><strong>Instagram:</strong> <a href="{{ escuela.instagram }}" target="_blank">{{ escuela.instagram }}</a></p>
+    {% endif %}
+    {% if escuela.facebook %}
+    <p class="mb-1"><strong>Facebook:</strong> <a href="{{ escuela.facebook }}" target="_blank">{{ escuela.facebook }}</a></p>
+    {% endif %}
+</div>
+
+<h3>Nuestras instalaciones</h3>
+<div class="row">
+    {% for f in fotos %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="{{ f.imagen.url }}" class="card-img-top" alt="{{ f.descripcion }}" style="height:220px; object-fit:cover">
+            {% if f.descripcion %}<div class="card-body"><p class="card-text">{{ f.descripcion }}</p></div>{% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-muted">Aún no hay fotos de las instalaciones.</p>
+    {% endfor %}
+</div>
+{% else %}
+<p class="text-muted">No hay información de la escuela registrada todavía.</p>
+{% endif %}
+{% endblock %}

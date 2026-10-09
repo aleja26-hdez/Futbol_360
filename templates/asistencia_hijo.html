@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Asistencia</h2>
+<table class="table">
+    <tr><th>Entrenamiento</th><th>Presente</th></tr>
+    {% for r in registros %}
+    <tr><td>{{ r.entrenamiento }}</td><td>{% if r.presente %}✅{% else %}❌{% endif %}</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

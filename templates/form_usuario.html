@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{% if modo == 'crear' %}Nuevo usuario{% else %}Editar usuario{% endif %}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Guardar</button>
+</form>
+{% if modo == 'editar' %}
+<p class="text-muted mt-3">La contraseña no se edita desde aquí por seguridad. Si el usuario la olvidó, resetéala desde la terminal con <code>python manage.py changepassword usuario</code>.</p>
+{% endif %}
+{% endblock %}
