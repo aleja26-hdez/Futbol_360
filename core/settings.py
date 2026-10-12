@@ -1,5 +1,5 @@
 """
-Configuración de Django para el proyecto GolPro Manager.
+Configuración de Django para el proyecto Futbol 360.
 """
 
 from datetime import timedelta
