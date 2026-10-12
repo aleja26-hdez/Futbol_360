@@ -150,8 +150,14 @@ def pasar_asistencia(request):
 def mi_estado_cuenta(request):
     if request.user.rol != 'padre':
         return redirect('dashboard')
-    estados = EstadoPago.objects.filter(jugador__acudiente=request.user)
-    return render(request, 'mi_estado_cuenta.html', {'estados': estados})
+    estados = list(EstadoPago.objects.filter(jugador__acudiente=request.user))
+    return render(request, 'mi_estado_cuenta.html', {
+        'estados': estados,
+        'total_deuda': sum(e.saldo_pendiente for e in estados),
+        'n_pendientes': sum(1 for e in estados if e.estado == 'pendiente'),
+        'n_abonados': sum(1 for e in estados if e.estado == 'abonado'),
+        'n_cancelados': sum(1 for e in estados if e.estado == 'cancelado'),
+    })
 
 
 @login_required

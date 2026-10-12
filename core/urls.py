@@ -20,9 +20,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.contrib.auth import views as auth_views
-
+from escuelas.api import EscuelaInfoView
+...
+    
 urlpatterns = [
-
+    path('api/escuela/', EscuelaInfoView.as_view()),
     path('admin/', admin.site.urls),
      # Login por token (JWT)
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
@@ -41,8 +43,8 @@ urlpatterns = [
     path('api/torneos/', include('torneos.urls')),
     path('api/notificaciones/', include('notificaciones.urls')),
     path('api/usuarios/', include('usuarios.urls')),
-
     path('', include('reportes.urls')),
+    path('api/app/', include('reportes.api_urls')),
 ]
 
 
