@@ -1,29 +1,34 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <title>Futbol 360</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fútbol360</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/futbol360.css' %}" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-success">
+    <nav class="navbar navbar-dark">
         <div class="container">
-            <span class="navbar-brand">⚽ Futbol 360 </span>
+            <a class="f-logo" href="{% url 'landing' %}">⚽ FÚTBOL<span>360</span></a>
             {% if user.is_authenticated %}
             <div class="d-flex align-items-center">
-                <span class="text-white me-3">{{ user.first_name }} ({{ user.get_rol_display }})</span>
+                <span class="me-3 small">{{ user.first_name|default:user.username }} ({{ user.get_rol_display }})</span>
                 <form method="post" action="{% url 'logout' %}" class="d-inline">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-outline-light btn-sm">Cerrar sesión</button>
-</form>
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-success btn-sm">Cerrar sesión</button>
+                </form>
             </div>
+            {% else %}
+            <a class="f-btn f-btn-fill" href="{% url 'login' %}">👤 Iniciar sesión</a>
             {% endif %}
         </div>
     </nav>
 
     {% if user.is_authenticated %}
     <div class="container mt-3">
-        <div class="btn-group mb-4">
+        <div class="d-flex flex-wrap gap-2 mb-4">
             {% if user.rol == 'directivo' %}
                 <a href="{% url 'dashboard' %}" class="btn btn-outline-success">Dashboard</a>
                 <a href="{% url 'lista_jugadores' %}" class="btn btn-outline-success">Jugadores</a>
@@ -52,7 +57,7 @@
     </div>
     {% endif %}
 
-    <div class="container">
+    <div class="container pb-5">
         {% block content %}{% endblock %}
     </div>
 </body>

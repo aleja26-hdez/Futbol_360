@@ -354,3 +354,8 @@ def eliminar_foto(request, foto_id):
     foto.delete()
     messages.success(request, 'Foto eliminada.')
     return redirect('fotos_escuela', escuela_id=escuela_id)
+
+def landing(request):
+    escuela = Escuela.objects.first()
+    fotos = escuela.fotos.all() if escuela else []
+    return render(request, 'landing.html', {'escuela': escuela, 'fotos': fotos})

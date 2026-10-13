@@ -133,4 +133,4 @@ CORS_ALLOW_ALL_ORIGINS = True   # solo para pruebas; en producción se restringe
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/dashboard/'
-LOGOUT_REDIRECT_URL = '/login/'
+LOGOUT_REDIRECT_URL = 'landing'
