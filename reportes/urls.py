@@ -28,4 +28,6 @@ urlpatterns = [
     path('info-escuela/', views.info_escuela, name='info_escuela'),
     path('escuelas/<int:escuela_id>/fotos/', views.fotos_escuela, name='fotos_escuela'),
     path('fotos/<int:foto_id>/eliminar/', views.eliminar_foto, name='eliminar_foto'),
+    path('llaves/', views.lista_llaves, name='lista_llaves'),
+    path('llaves/<int:torneo_id>/', views.llave_torneo, name='llave_torneo'),
 ]

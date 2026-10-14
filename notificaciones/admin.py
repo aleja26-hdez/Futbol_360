@@ -8,3 +8,9 @@ class NotificacionAdmin(admin.ModelAdmin):
     list_display = ('destinatario', 'titulo', 'leida', 'fecha_envio')
     list_filter = ('leida', 'fecha_envio')
     search_fields = ('titulo', 'mensaje', 'destinatario__username')
+
+from .models import Notificacion, DispositivoPush
+
+@admin.register(DispositivoPush)
+class DispositivoPushAdmin(admin.ModelAdmin):
+    list_display = ('usuario', 'plataforma', 'fecha_registro')

@@ -34,3 +34,18 @@ class Partido(models.Model):
         verbose_name = "Partido"
         verbose_name_plural = "Partidos"
         ordering = ['fecha', 'hora']
+
+class Cruce(models.Model):
+    RONDAS = [('cuartos', 'Cuartos de final'), ('semis', 'Semifinales'), ('final', 'Final')]
+    torneo = models.ForeignKey(Torneo, on_delete=models.CASCADE, related_name='cruces')
+    ronda = models.CharField(max_length=10, choices=RONDAS)
+    posicion = models.PositiveSmallIntegerField()  # cuartos 1-4, semis 1-2, final 1
+    equipo_a = models.CharField(max_length=100, blank=True)  # solo se escriben en cuartos
+    equipo_b = models.CharField(max_length=100, blank=True)
+    goles_a = models.PositiveIntegerField(null=True, blank=True)
+    goles_b = models.PositiveIntegerField(null=True, blank=True)
+    penales_a = models.PositiveIntegerField(null=True, blank=True)
+    penales_b = models.PositiveIntegerField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ('torneo', 'ronda', 'posicion')

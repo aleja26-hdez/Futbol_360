@@ -1,5 +1,6 @@
 from django.urls import path
 from . import api_views
+from torneos import api_llave
 
 urlpatterns = [
     path('dashboard/', api_views.dashboard),
@@ -9,4 +10,7 @@ urlpatterns = [
     path('notificaciones/enviadas/', api_views.notificaciones_enviadas),
     path('notificaciones/destinatarios/', api_views.destinatarios),
     path('notificaciones/enviar/', api_views.enviar_notificacion),
+    path('dispositivos/', api_views.dispositivo),
+    path('torneos/<int:torneo_id>/llave/', api_llave.llave_torneo),
+    path('torneos/', api_llave.lista_torneos),
 ]

@@ -16,6 +16,7 @@ from escuelas.models import Escuela, FotoInstalacion
 from escuelas.forms import EscuelaForm, FotoInstalacionForm
 from usuarios.models import Usuario
 from usuarios.forms import UsuarioCreateForm, UsuarioEditForm
+from torneos import llave as llave_logica
 
 @login_required
 def dashboard(request):
@@ -290,29 +291,30 @@ def enviar_notificacion(request):
     if request.user.rol not in ['entrenador', 'directivo']:
         return redirect('dashboard')
 
-    entrenador = Entrenador.objects.filter(usuario=request.user).first()
-    if entrenador:
-        categorias = entrenador.categorias.all()
-        jugadores = Jugador.objects.filter(categoria__in=categorias)
-        padres_ids = jugadores.values_list('acudiente', flat=True)
-        queryset_padres = Usuario.objects.filter(id__in=padres_ids)
+    if request.user.rol == 'entrenador':
+        entrenador = get_object_or_404(Entrenador, usuario=request.user)
+        jugadores = Jugador.objects.filter(categoria__in=entrenador.categorias.all())
+        queryset_padres = Usuario.objects.filter(id__in=jugadores.values_list('acudiente', flat=True))
+        destino = 'notificaciones_entrenador'
     else:
         queryset_padres = Usuario.objects.filter(rol='padre')
+        destino = 'lista_notificaciones'
 
     if request.method == 'POST':
         form = NotificacionForm(request.POST)
-        form.fields['destinatario'].queryset = queryset_padres
-        if form.is_valid():
-            Notificacion.objects.create(
-                destinatario=form.cleaned_data['destinatario'],
-                titulo=form.cleaned_data['titulo'],
-                mensaje=form.cleaned_data['mensaje'],
-            )
-            messages.success(request, 'Notificación enviada correctamente.')
-            return redirect('notificaciones_entrenador')
     else:
         form = NotificacionForm()
-        form.fields['destinatario'].queryset = queryset_padres
+    form.fields['destinatario'].queryset = queryset_padres
+    form.fields['destinatario'].label_from_instance = lambda u: u.get_full_name() or u.username
+
+    if request.method == 'POST' and form.is_valid():
+        Notificacion.objects.create(
+            destinatario=form.cleaned_data['destinatario'],
+            titulo=form.cleaned_data['titulo'],
+            mensaje=form.cleaned_data['mensaje'],
+        )
+        messages.success(request, 'Notificación enviada correctamente.')
+        return redirect(destino)
 
     return render(request, 'form_notificacion.html', {'form': form})
 
@@ -359,3 +361,67 @@ def landing(request):
     escuela = Escuela.objects.first()
     fotos = escuela.fotos.all() if escuela else []
     return render(request, 'landing.html', {'escuela': escuela, 'fotos': fotos})
+
+
+@login_required
+def lista_llaves(request):
+    user = request.user
+    if user.rol == 'directivo':
+        torneos = Torneo.objects.all()
+    elif user.rol == 'entrenador':
+        entrenador = Entrenador.objects.filter(usuario=user).first()
+        torneos = Torneo.objects.filter(categoria__in=entrenador.categorias.all()) if entrenador else Torneo.objects.none()
+    elif user.rol == 'padre':
+        cats = Jugador.objects.filter(acudiente=user).values_list('categoria', flat=True)
+        torneos = Torneo.objects.filter(categoria__in=cats)
+    else:
+        return redirect('login')
+    return render(request, 'lista_llaves.html', {'torneos': torneos.select_related('categoria')})
+
+
+def _pildora(c, lado):
+    equipo = c['equipo_' + lado]
+    return {
+        'ronda': c['ronda'], 'posicion': c['posicion'], 'lado': lado,
+        'equipo': equipo, 'goles': c['goles_' + lado], 'penales': c['penales_' + lado],
+        'estado': c['estado'],
+        'gana': bool(c['ganador']) and c['ganador'] == equipo,
+        'tiene_penales': c['estado'] == 'empate' or c['penales_a'] is not None,
+        'nota': c['estado'] == 'empate' and lado == 'b',
+    }
+
+
+@login_required
+def llave_torneo(request, torneo_id):
+    torneo = get_object_or_404(Torneo.objects.select_related('categoria'), id=torneo_id)
+    if not llave_logica.puede_ver(request.user, torneo):
+        return redirect('dashboard')
+    editable = llave_logica.puede_editar(request.user, torneo)
+
+    if request.method == 'POST':
+        if not editable:
+            return redirect('dashboard')
+        entradas = []
+        for ronda, pos in llave_logica.ESTRUCTURA:
+            p = f'{ronda}_{pos}'
+            e = {'ronda': ronda, 'posicion': pos}
+            for campo, sufijo in (('equipo_a', 'ea'), ('equipo_b', 'eb'), ('goles_a', 'ga'),
+                                  ('goles_b', 'gb'), ('penales_a', 'pa'), ('penales_b', 'pb')):
+                e[campo] = request.POST.get(f'{p}_{sufijo}', '')
+            entradas.append(e)
+        try:
+            llave_logica.guardar_cruces(torneo, entradas)
+            messages.success(request, 'Llave guardada correctamente.')
+        except ValueError as err:
+            messages.error(request, str(err))
+        return redirect('llave_torneo', torneo_id=torneo.id)
+
+    data = llave_logica.armar_llave(torneo)
+    pildoras = {}
+    for x in data['cruces']:
+        prefijo = {'cuartos': 'q', 'semis': 's', 'final': 'f'}[x['ronda']]
+        for lado in ('a', 'b'):
+            pildoras[f"{prefijo}{x['posicion']}{lado}"] = _pildora(x, lado)
+    return render(request, 'llave_torneo.html', {
+        'torneo': torneo, 'editable': editable, 'campeon': data['campeon'], **pildoras,
+    })

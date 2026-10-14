@@ -9,6 +9,7 @@ from jugadores.models import Jugador
 from notificaciones.models import Notificacion
 from pagos.models import EstadoPago
 from usuarios.models import Usuario
+from notificaciones.models import DispositivoPush
 
 NO_AUTORIZADO = {'detail': 'No tienes permiso para esta acción'}
 
@@ -152,3 +153,20 @@ def enviar_notificacion(request):
         return Response({'detail': 'Elige un destinatario y completa título y mensaje'}, status=400)
     Notificacion.objects.create(destinatario=destinatario, titulo=titulo[:100], mensaje=mensaje)
     return Response({'ok': True}, status=201)
+
+@api_view(['POST', 'DELETE'])
+def dispositivo(request):
+    token = (request.data.get('token') or '').strip()
+    if not token:
+        return Response({'detail': 'Falta el token del dispositivo'}, status=400)
+    if request.method == 'POST':
+        DispositivoPush.objects.update_or_create(
+            token=token,
+            defaults={
+                'usuario': request.user,
+                'plataforma': request.data.get('plataforma', 'android'),
+            },
+        )
+        return Response({'ok': True})
+    DispositivoPush.objects.filter(token=token, usuario=request.user).delete()
+    return Response({'ok': True})

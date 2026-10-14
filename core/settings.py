@@ -134,3 +134,7 @@ CORS_ALLOW_ALL_ORIGINS = True   # solo para pruebas; en producción se restringe
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = 'landing'
+
+# Firebase (notificaciones push)
+FIREBASE_CREDENTIALS_FILE = BASE_DIR / 'firebase-credentials.json'
+FIREBASE_CREDENTIALS_JSON = config('FIREBASE_CREDENTIALS_JSON', default='')

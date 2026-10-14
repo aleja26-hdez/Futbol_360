@@ -1,0 +1,20 @@
+<div class="pil {{ p.ronda }}{% if p.gana %} gana{% endif %}{% if p.estado == 'empate' %} empate{% endif %}">
+  {% if editable and p.ronda == 'cuartos' %}
+    <input class="nom" name="{{ p.ronda }}_{{ p.posicion }}_e{{ p.lado }}" value="{{ p.equipo }}" placeholder="Equipo" maxlength="100">
+  {% else %}
+    <span class="nom">{{ p.equipo|default:"Por definir" }}</span>
+  {% endif %}
+  {% if editable %}
+    <input class="gol" type="number" min="0" max="99" name="{{ p.ronda }}_{{ p.posicion }}_g{{ p.lado }}" value="{{ p.goles|default_if_none:'' }}">
+  {% else %}
+    <span class="gol">{{ p.goles|default_if_none:"-" }}</span>
+  {% endif %}
+  {% if p.tiene_penales %}
+    {% if editable %}
+      <input class="gol pen" type="number" min="0" max="99" title="Penales" name="{{ p.ronda }}_{{ p.posicion }}_p{{ p.lado }}" value="{{ p.penales|default_if_none:'' }}">
+    {% else %}
+      <span class="gol pen">({{ p.penales|default_if_none:"-" }})</span>
+    {% endif %}
+  {% endif %}
+  {% if p.nota %}<div class="nota">⚠ Empate: se enfrentan para definir</div>{% endif %}
+</div>

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="{% url 'lista_llaves' %}" class="small">← Torneos</a>
+<h2 class="fw-bold mb-0">{{ torneo.nombre }}</h2>
+<div class="text-muted mb-3">{{ torneo.categoria.nombre }} · {{ torneo.fecha_inicio|date:"d/m/Y" }} a {{ torneo.fecha_fin|date:"d/m/Y" }}</div>
+
+{% for m in messages %}
+  <div class="alert alert-{% if m.tags == 'error' %}danger{% else %}{{ m.tags }}{% endif %}">{{ m }}</div>
+{% endfor %}
+
+{% if editable %}<form method="post">{% csrf_token %}{% endif %}
+
+<div class="cuadro">
+  <div class="llave-wrap">
+    <div class="llave2">
+
+      <div class="col">
+        <h6>Cuartos de final</h6>
+        <div class="celdas">
+          <div class="celda izq par-a">{% include '_pildora.html' with p=q1a %}</div>
+          <div class="celda izq par-b">{% include '_pildora.html' with p=q1b %}</div>
+          <div class="celda izq par-a">{% include '_pildora.html' with p=q2a %}</div>
+          <div class="celda izq par-b">{% include '_pildora.html' with p=q2b %}</div>
+        </div>
+      </div>
+
+      <div class="col">
+        <h6>Semifinales</h6>
+        <div class="celdas">
+          <div class="celda izq par-a entra">{% include '_pildora.html' with p=s1a %}</div>
+          <div class="celda izq par-b entra">{% include '_pildora.html' with p=s1b %}</div>
+        </div>
+      </div>
+
+      <div class="col centro">
+        <h6>Final</h6>
+        <div class="celdas">
+          <div class="zona-trofeo">
+            <div class="ganador-lbl">GANADOR</div>
+            <div class="copa">🏆</div>
+            <div class="campeon">{{ campeon|default:"Por definir" }}</div>
+          </div>
+          <div class="finalistas">
+            <div class="celda izq entra">{% include '_pildora.html' with p=f1a %}</div>
+            <span class="vs">vs</span>
+            <div class="celda der entra">{% include '_pildora.html' with p=f1b %}</div>
+          </div>
+          <div class="zona-vacia"></div>
+        </div>
+      </div>
+
+      <div class="col">
+        <h6>Semifinales</h6>
+        <div class="celdas">
+          <div class="celda der par-a entra">{% include '_pildora.html' with p=s2a %}</div>
+          <div class="celda der par-b entra">{% include '_pildora.html' with p=s2b %}</div>
+        </div>
+      </div>
+
+      <div class="col">
+        <h6>Cuartos de final</h6>
+        <div class="celdas">
+          <div class="celda der par-a">{% include '_pildora.html' with p=q3a %}</div>
+          <div class="celda der par-b">{% include '_pildora.html' with p=q3b %}</div>
+          <div class="celda der par-a">{% include '_pildora.html' with p=q4a %}</div>
+          <div class="celda der par-b">{% include '_pildora.html' with p=q4b %}</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="llave-pie"><span>CUADRO DEL TORNEO</span><span>{{ torneo.nombre }}</span></div>
+</div>
+
+{% if editable %}
+  <button type="submit" class="btn btn-success mt-3 fw-bold">Guardar llave</button>
+  <p class="text-muted small mt-2">Escribe los 8 equipos en los cuartos de final. Los ganadores pasan solos a la siguiente ronda. Si un partido queda empatado, aparecen las casillas de penales al guardar.</p>
+</form>
+{% endif %}
+{% endblock %}

@@ -59,3 +59,47 @@ a { color: var(--f-green); }
 .f-fotos img { width:100%; height:190px; object-fit:cover; }
 .f-fotos figcaption { padding:10px 12px; color:var(--f-muted); font-size:.9rem; }
 @media (max-width:768px) { .f-links { display:none; } .f-balon { display:none; } }
+/* ---------- Llave de torneo (estilo cuadro) ---------- */
+.cuadro { background:#1f2a24; border-radius:16px; overflow:hidden; }
+.llave-wrap { padding:18px 16px 0; overflow-x:auto; }
+.llave2 { display:flex; gap:26px; width:max-content; margin:0 auto; padding-bottom:18px; }
+.llave2 .col { width:165px; display:flex; flex-direction:column; }
+.llave2 .col.centro { width:340px; }
+.llave2 h6 { text-align:center; color:var(--f-muted); letter-spacing:1px; text-transform:uppercase; font-size:.7rem; font-weight:700; margin:0 0 6px; height:20px; }
+.llave2 .celdas { flex:1; display:flex; flex-direction:column; min-height:360px; }
+.celda { flex:1; display:flex; align-items:center; position:relative; }
+
+.pil { position:relative; width:100%; display:flex; align-items:center; gap:4px; padding:5px 8px; border-radius:8px; font-size:.8rem; font-weight:600; min-height:34px; box-sizing:border-box; }
+.pil.cuartos { background:#9ee7f7; color:#06222a; }
+.pil.semis { background:#ffc83d; color:#2b2100; }
+.pil.final { background:#fff; color:#111; }
+.pil .nom { flex:1; min-width:0; background:transparent; border:0; color:inherit; font:inherit; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:0; }
+.pil input.nom { border-bottom:1px dashed rgba(0,0,0,.35); outline:none; }
+.pil .gol { width:34px; text-align:center; background:rgba(255,255,255,.65); color:#111; border:1px solid rgba(0,0,0,.2); border-radius:5px; padding:1px; font:inherit; font-weight:700; box-sizing:border-box; }
+.pil span.gol { background:transparent; border:0; width:auto; min-width:20px; }
+.pil .pen { background:#ffe3b0; border-color:#e08a00; }
+.pil.gana { box-shadow:0 0 0 3px var(--f-green); }
+.pil.empate { outline:2px dashed #ff7a00; outline-offset:2px; }
+.pil .nota { position:absolute; top:100%; left:0; right:0; margin-top:4px; font-size:.66rem; line-height:1.15; color:#ffc107; font-weight:600; white-space:normal; }
+
+/* Conectores */
+.celda.izq.par-a::after, .celda.izq.par-b::after { content:''; position:absolute; right:-13px; width:13px; border-right:2px solid #2f7a47; }
+.celda.izq.par-a::after { top:50%; bottom:0; border-top:2px solid #2f7a47; }
+.celda.izq.par-b::after { top:0; bottom:50%; border-bottom:2px solid #2f7a47; }
+.celda.der.par-a::after, .celda.der.par-b::after { content:''; position:absolute; left:-13px; width:13px; border-left:2px solid #2f7a47; }
+.celda.der.par-a::after { top:50%; bottom:0; border-top:2px solid #2f7a47; }
+.celda.der.par-b::after { top:0; bottom:50%; border-bottom:2px solid #2f7a47; }
+.celda.izq.entra::before { content:''; position:absolute; left:-13px; width:13px; top:50%; border-top:2px solid #2f7a47; }
+.celda.der.entra::before { content:''; position:absolute; right:-13px; width:13px; top:50%; border-top:2px solid #2f7a47; }
+
+/* Centro: ganador y final */
+.zona-trofeo { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; text-align:center; padding-bottom:16px; }
+.zona-trofeo .ganador-lbl { color:#fff; letter-spacing:3px; font-weight:800; font-size:.8rem; }
+.zona-trofeo .copa { font-size:3.6rem; line-height:1.1; }
+.zona-trofeo .campeon { color:#ffc83d; font-weight:800; }
+.finalistas { display:flex; align-items:center; gap:10px; }
+.finalistas .celda { flex:1; }
+.finalistas .vs { color:var(--f-muted); font-size:.7rem; font-weight:700; }
+.zona-vacia { flex:1; }
+
+.llave-pie { background:#ffc83d; color:#2b2100; padding:12px 20px; display:flex; justify-content:space-between; align-items:center; font-weight:800; flex-wrap:wrap; gap:6px; }
