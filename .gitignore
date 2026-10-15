@@ -7,3 +7,5 @@ node_modules/
 firebase-credentials.json
 firebase-credentials*.json
 firebase-key*.json
+*.sql
+respaldo.sql
