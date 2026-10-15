@@ -21,6 +21,8 @@ from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.contrib.auth import views as auth_views
 from escuelas.api import EscuelaInfoView
+from django.urls import re_path
+from django.views.static import serve
 ...
     
 urlpatterns = [
@@ -45,6 +47,7 @@ urlpatterns = [
     path('api/usuarios/', include('usuarios.urls')),
     path('', include('reportes.urls')),
     path('api/app/', include('reportes.api_urls')),
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 ]
 
 

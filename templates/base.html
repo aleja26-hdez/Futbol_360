@@ -52,7 +52,9 @@
                 <a href="{% url 'mi_estado_cuenta' %}" class="btn btn-outline-success">Estado de cuenta</a>
                 <a href="{% url 'asistencia_hijo' %}" class="btn btn-outline-success">Asistencia de mi hijo</a>
                 <a href="{% url 'mis_entrenamientos_hijo' %}" class="btn btn-outline-success">Entrenamientos y torneos</a>
-                <a href="{% url 'mis_notificaciones' %}" class="btn btn-outline-success">Notificaciones</a>
+                <a href="{% url 'mis_notificaciones' %}" class="btn btn-outline-success">
+                   Notificaciones{% if sin_leer %} <span class="badge bg-danger">{{ sin_leer }}</span>{% endif %}
+                </a>
                 <a href="{% url 'info_escuela' %}" class="btn btn-outline-success">La escuela</a>
                 <a href="{% url 'lista_llaves' %}" class="btn btn-outline-success">Llaves de torneos</a>
             {% endif %}

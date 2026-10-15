@@ -30,4 +30,6 @@ urlpatterns = [
     path('fotos/<int:foto_id>/eliminar/', views.eliminar_foto, name='eliminar_foto'),
     path('llaves/', views.lista_llaves, name='lista_llaves'),
     path('llaves/<int:torneo_id>/', views.llave_torneo, name='llave_torneo'),
+    path('mis-notificaciones/<int:notificacion_id>/leida/', views.marcar_notificacion_leida, name='marcar_notificacion_leida'),
+path('mis-notificaciones/leer-todas/', views.marcar_todas_leidas, name='marcar_todas_leidas'),
 ]

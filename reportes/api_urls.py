@@ -13,4 +13,6 @@ urlpatterns = [
     path('dispositivos/', api_views.dispositivo),
     path('torneos/<int:torneo_id>/llave/', api_llave.llave_torneo),
     path('torneos/', api_llave.lista_torneos),
+    path('notificaciones/<int:notificacion_id>/leer/', api_views.notificacion_leer),
+    path('notificaciones/leer-todas/', api_views.notificaciones_leer_todas),
 ]

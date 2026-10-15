@@ -12,7 +12,7 @@
         <td>{{ n.destinatario }}</td>
         <td>{{ n.titulo }}</td>
         <td>{{ n.mensaje }}</td>
-        <td>{% if n.leida %}✅{% else %}❌{% endif %}</td>
+        <td>{% if n.leida %}<span class="badge bg-success">Leída</span>{% else %}<span class="badge bg-secondary">Sin leer</span>{% endif %}</td>
         <td>{{ n.fecha_envio }}</td>
     </tr>
     {% empty %}

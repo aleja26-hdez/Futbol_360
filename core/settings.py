@@ -11,12 +11,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-# Solo para desarrollo: permite entrar desde el celular por la IP del computador.
-# Cuando despleguemos en Railway se limita al dominio real.
-ALLOWED_HOSTS = ['192.168.40.144', 'localhost', '127.0.0.1']
-
+ALLOWED_HOSTS = ['192.168.40.144', 'localhost', '127.0.0.1', '.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://*.up.railway.app']
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -47,6 +46,8 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -67,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'reportes.context_processors.notificaciones_sin_leer',
             ],
         },
     },
@@ -102,10 +104,15 @@ USE_TZ = True
 
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STORAGES = {
+    'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+    'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'},
+}
 
-MEDIA_URL = '/media/'            # dirección web desde donde se ven las imágenes
-MEDIA_ROOT = BASE_DIR / 'media'  # carpeta real donde Django guarda los archivos
+MEDIA_URL = '/media/'
+MEDIA_ROOT = config('MEDIA_ROOT', default=str(BASE_DIR / 'media'))
 
 MAILERS = {
     'default': {

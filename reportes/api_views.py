@@ -10,6 +10,7 @@ from notificaciones.models import Notificacion
 from pagos.models import EstadoPago
 from usuarios.models import Usuario
 from notificaciones.models import DispositivoPush
+from django.shortcuts import get_object_or_404
 
 NO_AUTORIZADO = {'detail': 'No tienes permiso para esta acción'}
 
@@ -169,4 +170,18 @@ def dispositivo(request):
         )
         return Response({'ok': True})
     DispositivoPush.objects.filter(token=token, usuario=request.user).delete()
+    return Response({'ok': True})
+
+@api_view(['POST'])
+def notificacion_leer(request, notificacion_id):
+    n = get_object_or_404(Notificacion, id=notificacion_id, destinatario=request.user)
+    if not n.leida:
+        n.leida = True
+        n.save(update_fields=['leida'])
+    return Response({'ok': True})
+
+
+@api_view(['POST'])
+def notificaciones_leer_todas(request):
+    Notificacion.objects.filter(destinatario=request.user, leida=False).update(leida=True)
     return Response({'ok': True})

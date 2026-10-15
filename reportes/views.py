@@ -266,9 +266,11 @@ def mis_entrenamientos_hijo(request):
 def mis_notificaciones(request):
     if request.user.rol != 'padre':
         return redirect('dashboard')
-
     notificaciones = Notificacion.objects.filter(destinatario=request.user)
-    return render(request, 'mis_notificaciones.html', {'notificaciones': notificaciones})
+    return render(request, 'mis_notificaciones.html', {
+        'notificaciones': notificaciones,
+        'no_leidas': notificaciones.filter(leida=False).count(),
+    })
 
 from usuarios.forms import NotificacionForm
 
@@ -425,3 +427,16 @@ def llave_torneo(request, torneo_id):
     return render(request, 'llave_torneo.html', {
         'torneo': torneo, 'editable': editable, 'campeon': data['campeon'], **pildoras,
     })
+
+@login_required
+def marcar_notificacion_leida(request, notificacion_id):
+    if request.method == 'POST':
+        Notificacion.objects.filter(id=notificacion_id, destinatario=request.user).update(leida=True)
+    return redirect('mis_notificaciones')
+
+
+@login_required
+def marcar_todas_leidas(request):
+    if request.method == 'POST':
+        Notificacion.objects.filter(destinatario=request.user, leida=False).update(leida=True)
+    return redirect('mis_notificaciones')
